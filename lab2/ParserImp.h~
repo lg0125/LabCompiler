@@ -1,0 +1,176 @@
+#ifndef PARSERIMP_H
+#define PARSERIMP_H
+
+#include "Parser.h"
+
+int program(){
+	
+	p = scanner;
+
+	subProgram();
+
+	if(strcmp(p->str, ".") == 0){
+		p = p->next;
+		printf("SUCCESS!\n");
+	}else{
+		printf("GRAMMER ERROR\n");
+		exit(0);
+	}
+
+	return 0;
+}
+
+
+int unsignedInt(){
+	if(p->type == 1) p = p->next;
+	else{
+		printf("unsignedInt ERROR\n");
+		exit(0);
+	}
+	
+	return 0; 
+}
+
+int id(){
+	if(p->type == 0) p = p->next;
+	else{
+		printf("id ERROR\n");
+		exit(0);
+	}
+
+	return 0;
+}
+
+int constDef(){
+	id();
+	
+	if(strcmp(p->str, "=") == 0){
+		p = p->next;
+		unsignedInt();
+	}else{
+		printf("constDef ERROR\n");
+		exit(0);
+	}
+
+	return 0;
+}
+
+//1
+int conExplain(){
+	if(strcmp(p->str, "const") == 0){
+		p = p->next;
+
+		constDef();//not
+	
+		while(strcmp(p->str, ",")){
+			p = p->next;
+		
+			constDef();
+		}
+
+		if(strcmp(p->str, ";") == 0){
+			p = p->next;
+		}else{
+			printf("conExplain1 ERROR\n");
+			exit(0);
+		}
+	}else{
+		printf("conExplain2 ERROR\n");
+		exit(0);
+	}
+	return 0;
+}
+
+//2
+int varExplain(){
+	
+	if(strcmp(p->str, "var") == 0){
+		p = p->next;
+		
+		id();
+		
+		while(strcmp(p->str, ",") == 0){
+			p = p->next;
+			
+			id();
+		}
+		
+		if(strcmp(p->str, ";") == 0) p = p->next;
+		else{
+			printf("varExplain1 ERROR\n");
+			exit(0);
+		}
+	}else{
+		printf("varExplain2 ERROR\n");
+		exit(0);
+	}
+	
+	return 0;
+}
+
+
+int processHead(){
+	if(strcmp(p->str, "procedure") == 0){
+		p = p->next;
+		
+		id();
+		
+		if(strcmp(p->str, ";") == 0) p = p->next;
+		else{
+			printf("processHead1 ERROR\n");
+			exit(0);
+		}
+	}else{
+		printf("processHead2 ERROR\n");
+		exit(0);
+	}
+	
+	return 0;
+}
+
+//3
+int processExplain(){
+	processHead();
+	
+	subProgram();
+	
+	if(strcmp(p->str, ";") == 0){
+		p = p->next;
+		
+		while(strcmp(p->str, "procedure") == 0) processExplain();
+	}else{
+		printf("processExplain ERROR\n");
+		exit(0);
+	}
+	
+}
+
+int subProgram(){
+	
+	if(strcmp(p->str, "const") == 0) conExplain();
+
+	if(strcmp(p->str, "var") == 0) varExplain();
+
+	if(strcmp(p->str, "procedure") == 0) processExplain();
+
+	statement();
+
+	return 0;
+}
+
+//4
+int statement(){
+	if(p->type == 0) assignmentStatement();
+	else if(strcmp(p->str, "if") == 0) conditionStatement();
+	else if(strcmp(p->str, "while") == 0) doWhile();
+	else if(strcmp(p->str, "call") == 0) processCall();
+	else if(strcmp(p->str, "read") == 0) readStatement();
+	else if(strcmp(p->str, "write") == 0) writeStatement();
+	else if(strcmp(p->str, "begin") == 0) compoundStatement();
+}
+
+
+
+
+
+#endif

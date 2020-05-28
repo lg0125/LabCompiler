@@ -1,0 +1,24 @@
+#ifndef PARSER_H
+#define PARSER_H
+
+#include "ScannerImp.h"
+
+typedef struct node{
+	int num;
+	char element[20];
+	struct node *child[20];
+}node;
+
+node *tProgram;
+node *tSubProgramm;
+node *tConExplain, *tVarExplain, *tProcessExplain, *tNodeExplain;
+node *tConstDef, *tUnsignedInt, *tPoint, *tProcessHead, *tId;
+
+node* init(char *element){
+	node p = (node *)malloc()
+		
+
+}
+
+
+#endif

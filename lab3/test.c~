@@ -1,0 +1,11 @@
+#include "ParserImp.h"
+
+int main(){
+	char str[20] = "helloworld";
+	tNode *p;
+	init(&p,str);
+	printTree(p);
+	
+
+	return 0;
+}
